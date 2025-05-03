@@ -10,3 +10,4 @@ from .serializers import ItemSerializer
 class ItemViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    lookup_field = 'item_id'  # 👈 Key change
