@@ -24,4 +24,16 @@ Each app consists:
 - apps.py: this is where we configure the app(feature)
 - models.py: this is where the models are defined & pull data from db and show to user
 - tests.py: unit tests
-- views.py: basically a request handler(tbd)
+- views.py: basically a request handler(tbd), SEEMS important
+
+## views.py:
+
+each view or view function, takes in a request and returns a response
+
+## urls mapping:
+
+create a urls.py file for mapping the views(request handlers) to map to urls
+
+what a view is called in other frameworks is called a template in django
+
+template is what a user sees( html or css probably; tbd)
