@@ -2,7 +2,8 @@ from rest_framework import serializers
 from .models import Account
 
 
-class AccountSerializer(serializers.Serializer):
+class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ['first_name', 'last_name', 'email', 'created_at']
+        fields = ['id', 'first_name', 'last_name', 'email', 'created_at']
+        read_only_fields = ['id', 'created_at']
