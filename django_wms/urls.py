@@ -18,10 +18,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from .constants import APP_NAMES
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # basically any url that starts from /playground will be routed to the urls module of that app(feature)
     path(f'{APP_NAMES.PLAYGROUND}/',
-         include(f'{APP_NAMES.PLAYGROUND}.urls'))
-]
+         include(f'{APP_NAMES.PLAYGROUND}.urls')),
+
+] + debug_toolbar_urls()
