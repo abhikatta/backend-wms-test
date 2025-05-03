@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-xx0y8&um4c-vq2$-6l-8csiz%a!rc81-2y_4dg#$&7_*$dcib=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -36,8 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'playground',
-    'debug_toolbar'
+    'debug_toolbar',
+    'items'
 ]
 
 MIDDLEWARE = [
@@ -83,6 +83,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
 }
 
 
