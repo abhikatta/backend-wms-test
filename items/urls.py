@@ -1,13 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import ItemViewSet
-import constants
+from constants import ITEMS_URL
 
 router = DefaultRouter()
 
-router.register(rf'{constants.ITEMS}', ItemViewSet)
+router.register('', ItemViewSet)
 
 
 urlpatterns = [
-    path(f'{constants.API}', include(router.urls))
+    path(ITEMS_URL, include(router.urls))
 ]
