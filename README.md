@@ -1,4 +1,4 @@
-django_wms - core of the backend app
+main - core of the backend app
 
 init file - defines the directory as a package
 

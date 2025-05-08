@@ -1,9 +1,7 @@
-API_PREFIX = 'api'
+API_PREFIX = "api"
 
 # apps:
-ITEMS = 'items'
-ACCOUNTS = 'accounts'
+CREW = "crew"
 
 # app urls:
-ITEMS_URL = f'{API_PREFIX}/{ITEMS}/'
-ACCOUNTS_URL = f'{API_PREFIX}/{ACCOUNTS}/'
+ACCOUNTS_URL = f"{API_PREFIX}/{CREW}/"
