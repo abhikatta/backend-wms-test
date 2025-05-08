@@ -2,6 +2,8 @@ API_PREFIX = "api"
 
 # apps:
 CREW = "crew"
+ROLES = "roles"
 
 # app urls:
-ACCOUNTS_URL = f"{API_PREFIX}/{CREW}/"
+CREW_URL = f"{API_PREFIX}/{CREW}/"
+ROLES_URL = f"{API_PREFIX}/{ROLES}/"
