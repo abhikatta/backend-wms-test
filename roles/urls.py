@@ -1,11 +1,7 @@
-from django.urls import include, path
-from rest_framework.routers import DefaultRouter
-from constants import ROLES_URL
+from django.urls import path
 from .views import RoleListView
+from constants import ROLES_URL
 
-
-router = DefaultRouter()
-
-router.register("", RoleListView)
-
-urlpatterns = [path(ROLES_URL, include(router.urls))]
+urlpatterns = [
+    path(f"{ROLES_URL}", RoleListView.as_view(), name="role-list"),
+]

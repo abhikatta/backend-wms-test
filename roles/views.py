@@ -3,10 +3,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
 ROLES = [
-    ("carpenter", "Carpenter"),
-    ("plumber", "Plumber"),
-    ("electrician", "Electrician"),
-    ("mason", "Mason"),
+    {"value": "carpenter", "label": "Carpenter"},
+    {"value": "plumber", "label": "Plumber"},
+    {"value": "electrician", "label": "Electrician"},
+    {"value": "mason", "label": "Mason"},
 ]
 
 

@@ -21,10 +21,13 @@ class Crew(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         # basically when is_active is updated by user, the others are also turned falsy, (common business logic)
+
         if not self.is_active:
             self.is_tasked = False
             self.hourly_wage = 0
-            super().save(*args, **kwargs)
+
+        # always keep an eye on the indentation and drop a line space
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
