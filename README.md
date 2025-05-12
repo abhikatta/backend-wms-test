@@ -37,3 +37,15 @@ create a urls.py file for mapping the views(request handlers) to map to urls
 what a view is called in other frameworks is called a template in django
 
 template is what a user sees( html or css probably; tbd)
+
+# Auth
+
+- access token: has info about the user
+- refresh token: has longer life span to get a new access token
+
+# Viewset vs APIView
+
+best way:
+
+- use APIView only for as we dont need CRUD like for db on auth
+- use modelviewset for all CRUD operations on all other data
