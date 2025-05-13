@@ -30,6 +30,7 @@ from constants import LOGIN_URL, REFRESH_TOKEN_URL
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(f"{constants.CREW}.urls")),
+    path("", include(f"{constants.ROLES}.urls")),
     path("", include(f"{constants.ACCOUNTS}.urls")),
     # below is automatic for login, send username(email) and password for login in POST
     path(LOGIN_URL, TokenObtainPairView.as_view(), name="token_obtain_pair"),
