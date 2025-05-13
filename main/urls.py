@@ -23,6 +23,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from constants import LOGIN_URL, REFRESH_TOKEN_URL
 
 # basically any url that starts from /url-name will be routed to the urls module of that app(feature)
 
@@ -30,6 +31,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(f"{constants.CREW}.urls")),
     path("", include(f"{constants.ACCOUNTS}.urls")),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    # below is automatic for login, send username(email) and password for login in POST
+    path(LOGIN_URL, TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path(REFRESH_TOKEN_URL, TokenRefreshView.as_view(), name="token_refresh"),
 ] + debug_toolbar_urls()
