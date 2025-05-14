@@ -61,6 +61,9 @@ class SignUpSerializer(serializers.ModelSerializer):
         tokens = RefreshToken.for_user(instance)
 
         return {
+            "first_name": instance.first_name,
+            "last_name": instance.last_name,
+            "email": instance.email,
             "refresh": str(tokens),  # used to get new access tokens - long lived
             "access": str(tokens.access_token),  # short lived token
         }
