@@ -59,7 +59,7 @@ class SignUpView(APIView):
 class LoginView(APIView):
     def post(self, request):
         user = authenticate(
-            username=request.data.get("username"), password=request.user.get("password")
+            username=request.data.get("username"), password=request.data.get("password")
         )
         if user is None:
             return Response({"detail": "Invalid credentials"}, status=401)
@@ -88,6 +88,13 @@ class LoginView(APIView):
             samesite="Strict",
             max_age=30 * 24 * 60 * 60,  # 30 days
         )
+        return Response(
+            {
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+            }
+        )
 
 
 class TokenRefreshView(APIView):
@@ -110,6 +117,7 @@ class TokenRefreshView(APIView):
             samesite="Strict",
             max_age=15 * 60,  # 15 min
         )
+        return res
 
 
 class LogoutView(APIView):
