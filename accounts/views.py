@@ -1,11 +1,15 @@
-from django.contrib.auth import get_user_model
-
+from django.contrib.auth import get_user_model, authenticate
+from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.exceptions import AuthenticationFailed
 
 from .serializers import SignUpSerializer
+
+from .constants import Token
 
 
 class SignUpView(APIView):
@@ -20,10 +24,102 @@ class SignUpView(APIView):
 
             # save the user (calls create_user behind the scenes)
             user = serializer.save()
-            return Response(
-                serializer.to_representation(user), status=status.HTTP_201_CREATED
+            refresh = RefreshToken.for_user(user)
+            access_token = refresh.access_token
+
+            res = JsonResponse(
+                {
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                    "email": user.email,
+                }
             )
+
+            # set access token in server
+            res.set_cookie(
+                Token.ACCESS_TOKEN,
+                access_token,
+                httponly=True,
+                samesite="Strict",
+                max_age=15 * 60,  # 15 min
+            )
+
+            # set refresh token in server
+            res.set_cookie(
+                Token.REFRESH_TOKEN,
+                str(refresh),
+                httponly=True,
+                samesite="Strict",
+                max_age=30 * 24 * 60 * 60,  # 30 days
+            )
+            return res
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LoginView(APIView):
+    def post(self, request):
+        user = authenticate(
+            username=request.data.get("username"), password=request.user.get("password")
+        )
+        if user is None:
+            return Response({"detail": "Invalid credentials"}, status=401)
+
+        refresh_token = RefreshToken.for_user(user)
+        access_token = str(refresh_token.access_token)
+        res = JsonResponse({"message": "Login successful"})
+
+        # important part for setting cookies in server for the authenticated
+        # user for further requests:
+
+        # set access token in server
+        res.set_cookie(
+            Token.ACCESS_TOKEN,
+            access_token,
+            httponly=True,
+            samesite="Strict",
+            max_age=15 * 60,  # 15 min
+        )
+
+        # set refresh token in server
+        res.set_cookie(
+            Token.REFRESH_TOKEN,
+            str(refresh_token),
+            httponly=True,
+            samesite="Strict",
+            max_age=30 * 24 * 60 * 60,  # 30 days
+        )
+
+
+class TokenRefreshView(APIView):
+    def post(self, request):
+        token = request.COOKIES.get(Token.REFRESH_TOKEN)
+        if not token:
+            raise AuthenticationFailed("Refresh token not found!")
+
+        try:
+            refresh = RefreshToken(token)
+            access_token = refresh.access_token
+        except:
+            raise AuthenticationFailed("Invalid refresh token!")
+
+        res = JsonResponse({"message": "Token refreshed"})
+        res.set_cookie(
+            Token.ACCESS_TOKEN,
+            access_token,
+            httponly=True,
+            samesite="Strict",
+            max_age=15 * 60,  # 15 min
+        )
+
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        res = Response({"message": "Logout successful!"})
+        res.delete_cookie(Token.ACCESS_TOKEN)
+        res.delete_cookie(Token.REFRESH_TOKEN)
+        return res
 
 
 User = get_user_model()
