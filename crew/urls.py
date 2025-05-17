@@ -6,6 +6,6 @@ from .views import CrewViewSet
 
 router = DefaultRouter()
 
-router.register("", CrewViewSet)
+router.register("", CrewViewSet, basename="crew")
 
 urlpatterns = [path(CREW_URL, include(router.urls))]

@@ -6,5 +6,13 @@ from .serializers import CrewSerializer
 
 class CrewViewSet(viewsets.ModelViewSet):
     serializer_class = CrewSerializer
-    queryset = Crew.objects.all()
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Crew.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)

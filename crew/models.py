@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 ROLES = [
     ("carpenter", "Carpenter"),
@@ -18,6 +19,12 @@ class Crew(models.Model):
     hourly_wage = models.IntegerField(default=0)
     role = models.CharField(choices=ROLE_CHOICES, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="crews",
+        null=True,
+    )
 
     def save(self, *args, **kwargs) -> None:
         # basically when is_active is updated by user, the others are also turned falsy, (common business logic)
