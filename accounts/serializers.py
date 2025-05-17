@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class SignUpSerializer(serializers.ModelSerializer):
@@ -57,13 +56,8 @@ class SignUpSerializer(serializers.ModelSerializer):
     # when this serializer is used in a response, this function will attach/update data in response
     # which is basically when the user signs up
     def to_representation(self, instance):
-        # generate refresh and access tokens for the newly created user
-        tokens = RefreshToken.for_user(instance)
-
         return {
             "first_name": instance.first_name,
             "last_name": instance.last_name,
             "email": instance.email,
-            "refresh": str(tokens),  # used to get new access tokens - long lived
-            "access": str(tokens.access_token),  # short lived token
         }
