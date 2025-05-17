@@ -40,16 +40,16 @@ class SignUpView(APIView):
                 Token.ACCESS_TOKEN,
                 access_token,
                 httponly=True,
-                samesite="Strict",
+                samesite="Lax",
                 max_age=15 * 60,  # 15 min
             )
 
             # set refresh token in server
             res.set_cookie(
                 Token.REFRESH_TOKEN,
-                str(refresh),
+                str(object=refresh),
                 httponly=True,
-                samesite="Strict",
+                samesite="Lax",
                 max_age=30 * 24 * 60 * 60,  # 30 days
             )
             return res
@@ -66,7 +66,13 @@ class LoginView(APIView):
 
         refresh_token = RefreshToken.for_user(user)
         access_token = str(refresh_token.access_token)
-        res = JsonResponse({"message": "Login successful"})
+        res = JsonResponse(
+            {
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+            }
+        )
 
         # important part for setting cookies in server for the authenticated
         # user for further requests:
@@ -76,7 +82,7 @@ class LoginView(APIView):
             Token.ACCESS_TOKEN,
             access_token,
             httponly=True,
-            samesite="Strict",
+            samesite="Lax",
             max_age=15 * 60,  # 15 min
         )
 
@@ -85,16 +91,10 @@ class LoginView(APIView):
             Token.REFRESH_TOKEN,
             str(refresh_token),
             httponly=True,
-            samesite="Strict",
+            samesite="Lax",
             max_age=30 * 24 * 60 * 60,  # 30 days
         )
-        return Response(
-            {
-                "email": user.email,
-                "first_name": user.first_name,
-                "last_name": user.last_name,
-            }
-        )
+        return res
 
 
 class TokenRefreshView(APIView):
@@ -114,7 +114,7 @@ class TokenRefreshView(APIView):
             Token.ACCESS_TOKEN,
             access_token,
             httponly=True,
-            samesite="Strict",
+            samesite="Lax",
             max_age=15 * 60,  # 15 min
         )
         return res
