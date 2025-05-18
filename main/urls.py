@@ -11,5 +11,6 @@ urlpatterns = [
     path("", include(f"{constants.CREW}.urls")),
     path("", include(f"{constants.ROLES}.urls")),
     path("", include(f"{constants.ACCOUNTS}.urls")),
+    path("", include(f"{constants.CLIENTS}.urls")),
     # below is automatic for login, send username(email) and password for login in POST
 ] + debug_toolbar_urls()

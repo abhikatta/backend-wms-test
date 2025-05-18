@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from clients.models import Client
 
 ROLES = [
     ("carpenter", "Carpenter"),
@@ -25,6 +26,13 @@ class Crew(models.Model):
         related_name="crews",
         null=True,
     )
+    client = models.ForeignKey(
+        Client,  # or use the actual model path like 'yourapp.Client' if necessary
+        on_delete=models.SET_NULL,  # SET_NULL allows retaining the crew member if the client is deleted
+        null=True,
+        blank=True,
+        related_name="crew_members",
+    )
 
     def save(self, *args, **kwargs) -> None:
         # basically when is_active is updated by user, the others are also turned falsy, (common business logic)
@@ -37,4 +45,4 @@ class Crew(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return f"{self.first_name} {self.last_name}"
