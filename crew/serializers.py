@@ -5,11 +5,6 @@ from .models import Crew
 class CrewSerializer(serializers.ModelSerializer):
 
     # first called and removes the pop fields from the response
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Remove user and client from fields to exclude them from serialized output
-        self.fields.pop("user", None)
-        self.fields.pop("client", None)
 
     # DRF automatically calls get_<name>(here name=client_name) and attaches the returned value
     # in the response as a :read only field:
